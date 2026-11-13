@@ -1,0 +1,34 @@
+const router = require('express').Router();
+const { getHealth } = require('../controllers/healthController');
+const { listRequests, getRequest, createRequest, executeRequest, getStats } = require('../controllers/requestController');
+const workflows = require('../controllers/workflowController');
+const rules = require('../controllers/ruleController');
+const dependencies = require('../controllers/dependencyController');
+const retries = require('../controllers/retryController');
+const { listAuditLogs } = require('../controllers/auditController');
+
+router.get('/health', getHealth);
+router.get('/requests', listRequests);
+router.post('/requests', createRequest);
+router.get('/requests/stats', getStats);
+router.get('/requests/:id', getRequest);
+router.post('/requests/:id/execute', executeRequest);
+router.post('/requests/:id/retry', retries.retryNow);
+router.get('/retries/config', retries.getConfig);
+router.put('/retries/config', retries.updateConfig);
+router.get('/workflows', workflows.listWorkflows);
+router.post('/workflows', workflows.createWorkflow);
+router.get('/workflows/:id', workflows.getWorkflow);
+router.put('/workflows/:id', workflows.updateWorkflow);
+router.delete('/workflows/:id', workflows.deleteWorkflow);
+router.get('/dependencies/verification', dependencies.getVerification);
+router.put('/dependencies/verification/config', dependencies.updateVerificationConfig);
+router.post('/dependencies/verification/test', dependencies.testVerification);
+router.get('/audit-logs', listAuditLogs);
+router.post('/rules', rules.createRule);
+router.get('/rules', rules.listRules);
+router.get('/rules/:id', rules.getRule);
+router.put('/rules/:id', rules.updateRule);
+router.delete('/rules/:id', rules.deleteRule);
+
+module.exports = router;
